@@ -30,6 +30,7 @@ CREATE TABLE transfer (
 	transfer_date date DEFAULT CURRENT_DATE,
 	transfer_time time DEFAULT CURRENT_TIME,
 	transfer_type varchar NOT NULL,
+	status varchar NOT NULL,
 	amount money NOT NULL,
 	user_to varchar NOT NULL,
 	user_from varchar NOT NULL,
