@@ -10,8 +10,12 @@ public interface AccountDao {
 
     boolean update(long id, Account account);
 
+<<<<<<< HEAD
+    BigDecimal getBalance(long id);
+=======
     BigDecimal getBalance(long Id);
 
     boolean createAccount(long userId);
+>>>>>>> 0d097da51a472fd1d2dd8fc432a19f40a2d89c76
 
 }
