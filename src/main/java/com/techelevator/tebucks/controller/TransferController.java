@@ -37,11 +37,7 @@ public class TransferController {
                 throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Insufficient Funds... broke ass");
             }
         } else {
-<<<<<<< HEAD
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Transfer amount must be greater than $0.00.");
-=======
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Transfer amount must be greater than $0.00");
->>>>>>> 0d097da51a472fd1d2dd8fc432a19f40a2d89c76
         }
     }
 
