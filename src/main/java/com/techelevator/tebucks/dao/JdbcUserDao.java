@@ -15,9 +15,11 @@ import java.util.List;
 public class JdbcUserDao implements UserDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private final AccountDao accountDao;
 
-    public JdbcUserDao(JdbcTemplate jdbcTemplate) {
+    public JdbcUserDao(JdbcTemplate jdbcTemplate, AccountDao accountDao) {
         this.jdbcTemplate = jdbcTemplate;
+        this.accountDao = accountDao;
     }
 
     @Override
@@ -79,7 +81,9 @@ public class JdbcUserDao implements UserDao {
         String password_hash = new BCryptPasswordEncoder().encode(password);
         Integer newUserId;
         newUserId = jdbcTemplate.queryForObject(sql, Integer.class, username, password_hash);
-
+        if (newUserId != null) {
+            accountDao.createAccount(newUserId);
+        }
         return newUserId != null;
     }
 
