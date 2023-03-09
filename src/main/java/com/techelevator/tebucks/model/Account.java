@@ -6,6 +6,7 @@ public class Account {
     private int accountId;
     private int userId;
     private BigDecimal balance;
+    private boolean active;
 
     public int getAccountId() {
         return accountId;
