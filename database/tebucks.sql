@@ -1,29 +1,27 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS accounts;
 
-CREATE TABLE accounts ( 
-	account_id serial NOT NULL,
-	balance money DEFAULT 1000.00,
-	
-	CONSTRAINT pk_accounts PRIMARY KEY (account_id)
-
-
-);
 
 CREATE TABLE users (
 	user_id serial NOT NULL,
 	username varchar(50) UNIQUE NOT NULL,
 	password_hash varchar(200) NOT NULL,
 	role varchar(20),
-	account_id int NOT NULL,
-	
+	active boolean DEFAULT true,
+
 	CONSTRAINT pk_users PRIMARY KEY (user_id),
-	CONSTRAINT uq_username UNIQUE (username),
-	CONSTRAINT fk_users_account_id FOREIGN KEY (account_id) REFERENCES accounts (account_id)
+	CONSTRAINT uq_username UNIQUE (username)
 );
 
-
+CREATE TABLE accounts ( 
+	account_id serial NOT NULL,
+	user_id int NOT NULL,
+	balance money DEFAULT 1000.00,
+	
+	CONSTRAINT pk_accounts PRIMARY KEY (account_id),
+	CONSTRAINT fk_account_users_id FOREIGN KEY (user_id) REFERENCES users (user_id)
+);
 
 CREATE TABLE transfer (
 	transfer_id serial PRIMARY KEY,

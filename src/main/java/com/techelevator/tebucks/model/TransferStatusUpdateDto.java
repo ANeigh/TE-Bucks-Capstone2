@@ -1,6 +1,6 @@
 package com.techelevator.tebucks.model;
 
-public class TransferStatusUpdateDto {
+public class 	TransferStatusUpdateDto {
 	private String transferStatus;
 
 	public String getTransferStatus() {
