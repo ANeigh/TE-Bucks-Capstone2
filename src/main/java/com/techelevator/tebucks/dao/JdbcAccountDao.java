@@ -1,12 +1,14 @@
 package com.techelevator.tebucks.dao;
 
 import com.techelevator.tebucks.model.Account;
+import com.techelevator.tebucks.model.Transfer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-
+@Component
 public class JdbcAccountDao implements AccountDao{
 
     private final JdbcTemplate jdbcTemplate;
@@ -27,9 +29,19 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public boolean update(long id, Account account) {
+    public boolean update(long id, Transfer transfer) {
+        boolean fromUserSuccess;
+        boolean toUserSuccess;
+        BigDecimal fromUserBalance = getBalance(transfer.getUserFrom().getId()).subtract(transfer.getAmount());
+        BigDecimal toUserBalance = getBalance(transfer.getUserTo().getId()).add(transfer.getAmount());
         String sql = "UPDATE account SET balance = ? WHERE id = ? ";
-        return jdbcTemplate.update(sql, account.getBalance(), id) == 1;
+        String sql2 = "UPDATE account SET balance = ? WHERE id = ? ";
+        fromUserSuccess = jdbcTemplate.update(sql, fromUserBalance, transfer.getUserFrom().getId()) == 1;
+        if (fromUserSuccess) {
+            toUserSuccess = jdbcTemplate.update(sql2, toUserBalance, transfer.getUserTo().getId()) == 1;
+        } else toUserSuccess = false;
+
+        return (toUserSuccess);
     }
 
     @Override
