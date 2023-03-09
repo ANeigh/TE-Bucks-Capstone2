@@ -33,13 +33,22 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public BigDecimal getBalance(long id, Account account) {
+    public BigDecimal getBalance(long userId) {
         String sql = "Select balance FROM accounts WHERE account_id = ?";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
         if (results.next()) {
             return mapRowToAccount(results).getBalance();
         }
         return null;
+    }
+
+    @Override
+    public boolean createAccount(long userId) {
+        String sql = "INSERT into accounts (account_id, user_id, balance, active)" +
+                " VALUES (DEFAULT, ?, DEFAULT, DEFAULT) RETURNING account_id";
+        Integer newAccountId;
+        newAccountId =  jdbcTemplate.queryForObject(sql, Integer.class, userId);
+        return newAccountId != null;
     }
 
     private Account mapRowToAccount(SqlRowSet rs) {

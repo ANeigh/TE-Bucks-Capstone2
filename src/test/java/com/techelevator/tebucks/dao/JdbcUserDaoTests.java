@@ -20,7 +20,8 @@ public class JdbcUserDaoTests extends BaseDaoTests {
     @Before
     public void setup() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        sut = new JdbcUserDao(jdbcTemplate);
+        AccountDao accountDao = new JdbcAccountDao(jdbcTemplate);
+        sut = new JdbcUserDao(jdbcTemplate, accountDao);
     }
 
     @Test(expected = IllegalArgumentException.class)
