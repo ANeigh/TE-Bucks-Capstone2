@@ -41,22 +41,46 @@ public class Transfer {
     }
 
 	public boolean isApproved() {
-		return false; // TODO
-	}
+        return transferStatus.equals(TRANSFER_STATUS_APPROVED);
+    }
 	
 	public boolean isRejected() {
-		return false; // TODO
-	}
+        return transferStatus.equals(TRANSFER_STATUS_REJECTED);
+    }
 	
 	public boolean isPending() {
-		return false; // TODO
-	}
+        return transferStatus.equals(TRANSFER_STATUS_PENDING);
+    }
 	
 	public boolean isRequestType() {
-		return false; // TODO
-	}
+        return transferType.equals(TRANSFER_TYPE_REQUEST);
+    }
 	
 	public boolean isSendType() {
-		return false; // TODO
-	}
+        return transferType.equals(TRANSFER_TYPE_SEND);
+    }
+
+    public void setTransferId(int transferId) {
+        this.transferId = transferId;
+    }
+
+    public void setTransferType(String transferType) {
+        this.transferType = transferType;
+    }
+
+    public void setTransferStatus(String transferStatus) {
+        this.transferStatus = transferStatus;
+    }
+
+    public void setUserFrom(User userFrom) {
+        this.userFrom = userFrom;
+    }
+
+    public void setUserTo(User userTo) {
+        this.userTo = userTo;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
 }

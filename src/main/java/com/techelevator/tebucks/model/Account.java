@@ -18,4 +18,13 @@ public class Account {
     public BigDecimal getBalance() {
         return balance;
     }
+
+    public void setId(int id) {
+        this.accountId = id;
+    }
+
+    public void setBalance(BigDecimal newBalance) {
+        this.balance = newBalance;
+    }
+
 }
