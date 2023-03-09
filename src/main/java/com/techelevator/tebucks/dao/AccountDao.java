@@ -10,6 +10,6 @@ public interface AccountDao {
 
     boolean update(long id, Account account);
 
-    BigDecimal getBalance(long id, Account account);
+    BigDecimal getBalance(long id);
 
 }

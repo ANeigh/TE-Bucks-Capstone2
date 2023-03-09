@@ -16,7 +16,6 @@ public class User {
    @JsonIgnore
    private boolean activated;
    private Set<Authority> authorities = new HashSet<>();
-
    public User() { }
 
    public User(int id, String username, String password, String authorities) {

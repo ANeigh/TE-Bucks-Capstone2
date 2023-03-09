@@ -33,7 +33,7 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public BigDecimal getBalance(long id, Account account) {
+    public BigDecimal getBalance(long id) {
         String sql = "Select balance FROM accounts WHERE account_id = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
         if (results.next()) {
