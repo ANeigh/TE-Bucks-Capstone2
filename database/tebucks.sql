@@ -3,6 +3,7 @@ BEGIN TRANSACTION;
 DROP TABLE IF EXISTS accounts;
 
 
+
 CREATE TABLE users (
 	user_id serial NOT NULL,
 	username varchar(50) UNIQUE NOT NULL,
@@ -18,6 +19,7 @@ CREATE TABLE accounts (
 	account_id serial NOT NULL,
 	user_id int NOT NULL,
 	balance money DEFAULT 1000.00,
+	active DEFAULT TRUE,
 	
 	CONSTRAINT pk_accounts PRIMARY KEY (account_id),
 	CONSTRAINT fk_account_users_id FOREIGN KEY (user_id) REFERENCES users (user_id)
