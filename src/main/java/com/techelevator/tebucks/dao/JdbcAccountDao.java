@@ -29,7 +29,7 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public boolean update(long id, Transfer transfer) {
+    public boolean update(Transfer transfer) {
         boolean fromUserSuccess;
         boolean toUserSuccess;
         BigDecimal fromUserBalance = getBalance(transfer.getUserFrom().getId()).subtract(transfer.getAmount());

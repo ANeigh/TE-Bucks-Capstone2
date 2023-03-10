@@ -22,18 +22,17 @@ public class UserController {
 public UserController(UserDao userDao, TransferDao transferDao) {
     this.userDao = userDao;
     this.transferDao = transferDao;
-
-}
+    }
 
 @RequestMapping(path = "/users", method = RequestMethod.GET)
     public List<User> getAllUsers() {
         return userDao.findAll();
-}
+    }
 
 @RequestMapping(path = "/transfers", method = RequestMethod.GET)
     public List<Transfer> getAllTransfers(int userId) {
         return transferDao.getListOfTransfers(userId);
-}
+    }
 
 
 

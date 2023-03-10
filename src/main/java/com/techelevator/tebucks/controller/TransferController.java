@@ -30,9 +30,19 @@ public class TransferController {
     @PostMapping
     public boolean createTransfer(@RequestBody Transfer transfer) {
         BigDecimal minAmount = new BigDecimal("0.01");
+
+        if (transfer.isSendType()) {
+            transfer.setTransferStatus(Transfer.TRANSFER_STATUS_APPROVED);
+        }
+        transfer.setTransferStatus(Transfer.TRANSFER_STATUS_PENDING);
+
         if (transfer.getAmount().compareTo(minAmount) >= 0) {
             if (accountDao.getBalance(transfer.getUserFrom().getId()).compareTo(transfer.getAmount()) >= 0) {
+                if (transfer.isApproved()) {
+                    accountDao.update(transfer);
+                }
                 return transferDao.createTransfer(transfer);
+
             } else {
                 throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Insufficient Funds... broke ass");
             }
@@ -43,6 +53,10 @@ public class TransferController {
 
     @PutMapping(path = "/{id}/status")
     public boolean updateTransferStatus(@RequestBody Transfer transfer, @PathVariable long transferId) {
-        return transferDao.updateTransferStatus(transfer, transferId);
+        boolean updateSuccessful =  transferDao.updateTransferStatus(transfer);
+        if (updateSuccessful && transfer.isApproved()) {
+            accountDao.update(transfer);
+        }
+        return updateSuccessful;
     }
 }
