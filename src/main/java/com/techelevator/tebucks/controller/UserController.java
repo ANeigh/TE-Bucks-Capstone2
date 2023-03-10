@@ -25,15 +25,19 @@ public UserController(UserDao userDao, TransferDao transferDao) {
     }
 
 @RequestMapping(path = "/users", method = RequestMethod.GET)
-    public List<User> getAllUsers() {
-        return userDao.findAll();
+    public List<User> getAllUsers(int userId) {
+        List<User> users = userDao.findAll();
+        for (User x : users) {
+            if (x.getId() == userId) {
+                users.remove(x);
+            }
+        }
+        return users;
     }
 
-@RequestMapping(path = "/transfers", method = RequestMethod.GET)
+@RequestMapping(path = "account/transfers", method = RequestMethod.GET)
     public List<Transfer> getAllTransfers(int userId) {
         return transferDao.getListOfTransfers(userId);
     }
-
-
 
 }

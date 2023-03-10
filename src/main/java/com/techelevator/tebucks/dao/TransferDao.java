@@ -12,7 +12,7 @@ public interface TransferDao {
 
     List<Transfer> getListOfTransfers(int userId);
 
-    boolean createTransfer(Transfer newTransfer);
+    long createTransfer(Transfer newTransfer);
 
     boolean updateTransferStatus(Transfer newTransfer);
 }

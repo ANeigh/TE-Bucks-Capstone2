@@ -1,9 +1,12 @@
 package com.techelevator.tebucks.model;
 
+import com.techelevator.tebucks.dao.JdbcUserDao;
+import org.springframework.boot.autoconfigure.quartz.QuartzProperties;
+
 import java.math.BigDecimal;
 
 public class Transfer {
-    private int transferId;
+    private long transferId;
     private String transferType;
     private String transferStatus;
     private User userFrom;
@@ -16,7 +19,8 @@ public class Transfer {
     public static final String TRANSFER_STATUS_APPROVED = "Approved";
     public static final String TRANSFER_STATUS_REJECTED = "Rejected";
 
-	public int getTransferId() {
+
+	public long getTransferId() {
         return transferId;
     }
 
@@ -60,7 +64,7 @@ public class Transfer {
         return transferType.equals(TRANSFER_TYPE_SEND);
     }
 
-    public void setTransferId(int transferId) {
+    public void setTransferId(long transferId) {
         this.transferId = transferId;
     }
 
