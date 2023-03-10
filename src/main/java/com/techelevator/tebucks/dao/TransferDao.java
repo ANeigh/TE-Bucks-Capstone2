@@ -14,5 +14,5 @@ public interface TransferDao {
 
     boolean createTransfer(Transfer newTransfer);
 
-    boolean updateTransferStatus(Transfer newTransfer, long transferId);
+    boolean updateTransferStatus(Transfer newTransfer);
 }

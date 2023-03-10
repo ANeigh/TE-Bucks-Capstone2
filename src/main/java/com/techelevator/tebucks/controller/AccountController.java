@@ -20,7 +20,4 @@ public class AccountController {
     public Account getAccountBalance(long id) {
         return accountDao.getAccountById(id);
     }
-
-
-
 }
