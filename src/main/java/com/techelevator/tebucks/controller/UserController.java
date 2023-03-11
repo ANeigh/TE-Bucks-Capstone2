@@ -15,8 +15,8 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/")
-//@PreAuthorize("isAuthenticated()")
+
+@PreAuthorize("isAuthenticated()")
 public class UserController {
 
     private final UserDao userDao;
@@ -28,7 +28,7 @@ public UserController(UserDao userDao, TransferDao transferDao) {
     this.transferDao = transferDao;
     }
 
-@RequestMapping(path = "users", method = RequestMethod.GET)
+@RequestMapping(path = "/api/users", method = RequestMethod.GET)
     public List<User> getAllUsers(Principal principal) {
         List<User> users = userDao.findAll();
         for (User x : users) {
@@ -39,9 +39,9 @@ public UserController(UserDao userDao, TransferDao transferDao) {
         return users;
     }
 
-@RequestMapping(path = "account/transfers", method = RequestMethod.GET)
-    public List<Transfer> getAllTransfers(int userId) {
-        return transferDao.getListOfTransfers(userId);
-    }
+//@RequestMapping(path = "/api/account/transfers", method = RequestMethod.GET)
+//    public List<Transfer> getAllTransfers(Principal principal) {
+//        return transferDao.getListOfTransfers(userDao.findByUsername(principal.getName()).getId());
+//    }
 
 }

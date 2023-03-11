@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 @RestController
-@RequestMapping(path = "/api/account")
-//@PreAuthorize("isAuthenticated()")
+
+@PreAuthorize("isAuthenticated()")
 public class AccountController {
 
     private final AccountDao accountDao;
@@ -23,8 +23,10 @@ public class AccountController {
         this.userDao = userDao;
     }
 
-    @RequestMapping(path = "/balance", method = RequestMethod.GET)
+    @RequestMapping(path = "/api/account/balance", method = RequestMethod.GET)
     public Account getAccountBalance(Principal principal) {
         return accountDao.getAccountById(userDao.findIdByUsername(principal.getName()));
     }
+
+
 }

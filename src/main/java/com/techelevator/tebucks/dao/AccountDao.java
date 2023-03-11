@@ -13,7 +13,7 @@ public interface AccountDao {
 
     BigDecimal getBalance(long id);
 
-    boolean createAccount(long userId);
+    boolean createAccount(Integer userId);
 
 
 }
