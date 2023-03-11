@@ -65,21 +65,16 @@ public class TransferController {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Transfer amount must be greater than $0.00");
         }
     }
-
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping(path = "/api/transfers/{id}/status")
-    public Transfer updateTransferStatus(@RequestBody TransferStatusUpdateDto transferStatusUpdateDto, @PathVariable Integer transferId) {
-       // Transfer transfer = transferDao.getTransferById(transferId);
-        //transfer.setTransferStatus(transferStatusUpdateDto.getTransferStatus());
-        //transfer.setTransferId(transferId);
-        Transfer transfer = new Transfer();
+    public Transfer updateTransferStatus(@RequestBody TransferStatusUpdateDto transferStatusUpdateDto, @PathVariable("id") Integer transferId) {
+        Transfer transfer = transferDao.getTransferById(transferId);
         transfer.setTransferStatus(transferStatusUpdateDto.getTransferStatus());
-        transfer.setTransferId(transferId);
 
-        boolean updateSuccessful =  transferDao.updateTransferStatus(transfer);
+        boolean updateSuccessful = transferDao.updateTransferStatus(transfer);
         if (updateSuccessful && transfer.isApproved()) {
             accountDao.update(transfer);
         }
         return transfer;
     }
-
 }
