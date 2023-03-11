@@ -45,11 +45,12 @@ public class TransferController {
         transfer.setUserFrom(userDao.getUserById(transferDto.getUserFrom()));
         transfer.setUserTo(userDao.getUserById(transferDto.getUserTo()));
 
+
+        transfer.setTransferStatus(Transfer.TRANSFER_STATUS_PENDING);
+
         if (transfer.isSendType()) {
             transfer.setTransferStatus(Transfer.TRANSFER_STATUS_APPROVED);
         }
-        transfer.setTransferStatus(Transfer.TRANSFER_STATUS_PENDING);
-
         if (transfer.getAmount().compareTo(minAmount) >= 0) {
             if (accountDao.getBalance(transfer.getUserFrom().getId()).compareTo(transfer.getAmount()) >= 0) {
                 if (transfer.isApproved()) {
@@ -77,4 +78,5 @@ public class TransferController {
         }
         return transfer;
     }
+
 }

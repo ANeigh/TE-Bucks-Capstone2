@@ -20,7 +20,7 @@ public class JdbcAccountDao implements AccountDao{
 
     @Override
     public Account getAccountById(long id) {
-        String sql = "SELECT * FROM accounts WHERE account_id = ?";
+        String sql = "Select account_id, user_id, CAST(balance as DECIMAL(34,2)), active FROM accounts WHERE account_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
         if (results.next()) {
             return mapRowToAccount(results);
@@ -35,8 +35,8 @@ public class JdbcAccountDao implements AccountDao{
         boolean toUserSuccess;
         BigDecimal fromUserBalance = getBalance(transfer.getUserFrom().getId()).subtract(transfer.getAmount());
         BigDecimal toUserBalance = getBalance(transfer.getUserTo().getId()).add(transfer.getAmount());
-        String sql = "UPDATE account SET balance = ? WHERE id = ? ";
-        String sql2 = "UPDATE account SET balance = ? WHERE id = ? ";
+        String sql = "UPDATE accounts SET balance = ? WHERE account_id = ? ";
+        String sql2 = "UPDATE accounts SET balance = ? WHERE account_id = ? ";
         fromUserSuccess = jdbcTemplate.update(sql, fromUserBalance, transfer.getUserFrom().getId()) == 1;
         if (fromUserSuccess) {
             toUserSuccess = jdbcTemplate.update(sql2, toUserBalance, transfer.getUserTo().getId()) == 1;
@@ -47,10 +47,12 @@ public class JdbcAccountDao implements AccountDao{
 
     @Override
     public BigDecimal getBalance(long id) {
-        String sql = "Select balance FROM accounts WHERE account_id = ?";
+        String sql = "Select CAST(balance as DECIMAL(34,2)) FROM accounts WHERE account_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+        BigDecimal balance;
         if (results.next()) {
-            return mapRowToAccount(results).getBalance();
+            balance = results.getBigDecimal("balance");
+            return balance;
         }
         return null;
     }
