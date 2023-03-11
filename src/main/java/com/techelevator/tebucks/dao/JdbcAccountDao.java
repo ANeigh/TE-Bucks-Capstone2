@@ -56,7 +56,7 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public boolean createAccount(long userId) {
+    public boolean createAccount(Integer userId) {
         String sql = "INSERT into accounts (account_id, user_id, balance, active)" +
                 " VALUES (DEFAULT, ?, DEFAULT, DEFAULT) RETURNING account_id";
         Integer newAccountId;

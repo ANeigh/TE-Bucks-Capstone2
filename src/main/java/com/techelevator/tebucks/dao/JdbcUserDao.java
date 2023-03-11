@@ -1,6 +1,7 @@
 package com.techelevator.tebucks.dao;
 
 import com.techelevator.tebucks.model.User;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -81,10 +82,16 @@ public class JdbcUserDao implements UserDao {
         String password_hash = new BCryptPasswordEncoder().encode(password);
         Integer newUserId;
         newUserId = jdbcTemplate.queryForObject(sql, Integer.class, username, password_hash);
-        if (newUserId != null) {
-            accountDao.createAccount(newUserId);
+
+        try {
+            if (newUserId != null) {
+                accountDao.createAccount(newUserId);
+            }
+            return newUserId != null;
+        } catch (DataAccessException e) {
+            System.out.println("Unable to create an account for new user");
         }
-        return newUserId != null;
+        return false;
     }
 
     private User mapRowToUser(SqlRowSet rs) {
@@ -92,7 +99,7 @@ public class JdbcUserDao implements UserDao {
         user.setId(rs.getInt("user_id"));
         user.setUsername(rs.getString("username"));
         user.setPassword(rs.getString("password_hash"));
-        user.setActivated(rs.getBoolean("active"));
+        user.setActivated(true);
         user.setAuthorities("USER");
         return user;
     }

@@ -16,8 +16,8 @@ import java.math.BigDecimal;
 import java.security.Principal;
 
 @RestController
-@RequestMapping(path = "/api/transfers/")
-//@PreAuthorize("isAuthenticated()")
+
+@PreAuthorize("isAuthenticated()")
 public class TransferController {
 
     private final TransferDao transferDao;
@@ -30,13 +30,13 @@ public class TransferController {
         this.userDao = userDao;
     }
 
-    @GetMapping(path = "{id}")
+    @GetMapping(path = "/api/transfers/{id}")
     public Transfer getTransferByID(@PathVariable Integer id) {
         return transferDao.getTransferById(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
+    @PostMapping(path = "/api/transfers")
     public Transfer createTransfer(@RequestBody NewTransferDto transferDto) {
         BigDecimal minAmount = new BigDecimal("0.01");
         Transfer transfer = new Transfer();
@@ -65,7 +65,7 @@ public class TransferController {
         }
     }
 
-    @PutMapping(path = "{id}/status")
+    @PutMapping(path = "/api/transfers/{id}/status")
     public Transfer updateTransferStatus(@RequestBody TransferStatusUpdateDto transferStatusUpdateDto, @PathVariable Integer transferId) {
         Transfer transfer = new Transfer();
         transfer.setTransferStatus(transferStatusUpdateDto.getTransferStatus());
