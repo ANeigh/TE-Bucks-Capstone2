@@ -73,7 +73,7 @@ public class JdbcTransferDao implements TransferDao{
 
     @Override
     public boolean updateTransferStatus(Transfer newTransfer) {
-        String sql = "UPDATE transfer SET status ? WHERE transfer_id = ? ";
+        String sql = "UPDATE transfer SET status = ? WHERE transfer_id = ? ";
         return jdbcTemplate.update(sql, newTransfer.getTransferStatus(), newTransfer.getTransferId()) == 1;
     }
 
@@ -81,11 +81,10 @@ public class JdbcTransferDao implements TransferDao{
         Transfer transfer = new Transfer();
         transfer.setAmount(rs.getBigDecimal("amount"));
         transfer.setTransferId(rs.getInt("transfer_id"));
-        transfer.setTransferStatus(rs.getString(""));
+        transfer.setTransferStatus(rs.getString("status"));
         transfer.setTransferType(rs.getString("transfer_type"));
         transfer.setUserFrom(userDao.findByUsername(rs.getString("user_from")));
         transfer.setUserTo(userDao.findByUsername(rs.getString("user_to")));
         return transfer;
     }
-
 }
