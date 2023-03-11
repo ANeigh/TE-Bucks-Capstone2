@@ -68,6 +68,9 @@ public class TransferController {
 
     @PutMapping(path = "/api/transfers/{id}/status")
     public Transfer updateTransferStatus(@RequestBody TransferStatusUpdateDto transferStatusUpdateDto, @PathVariable Integer transferId) {
+       // Transfer transfer = transferDao.getTransferById(transferId);
+        //transfer.setTransferStatus(transferStatusUpdateDto.getTransferStatus());
+        //transfer.setTransferId(transferId);
         Transfer transfer = new Transfer();
         transfer.setTransferStatus(transferStatusUpdateDto.getTransferStatus());
         transfer.setTransferId(transferId);
