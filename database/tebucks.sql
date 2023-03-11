@@ -8,7 +8,7 @@ CREATE TABLE users (
 	user_id serial NOT NULL,
 	username varchar(50) UNIQUE NOT NULL,
 	password_hash varchar(200) NOT NULL,
-	role varchar(20) DEFAULT 'User',
+	role varchar(20) DEFAULT 'USER',
 	active boolean DEFAULT true,
 
 	CONSTRAINT pk_users PRIMARY KEY (user_id),
