@@ -4,15 +4,19 @@ import com.techelevator.tebucks.dao.JdbcTransferDao;
 import com.techelevator.tebucks.dao.TransferDao;
 import com.techelevator.tebucks.dao.UserDao;
 import com.techelevator.tebucks.model.Transfer;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.techelevator.tebucks.model.User;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/")
+//@PreAuthorize("isAuthenticated()")
 public class UserController {
 
     private final UserDao userDao;
@@ -24,11 +28,11 @@ public UserController(UserDao userDao, TransferDao transferDao) {
     this.transferDao = transferDao;
     }
 
-@RequestMapping(path = "/users", method = RequestMethod.GET)
-    public List<User> getAllUsers(int userId) {
+@RequestMapping(path = "users", method = RequestMethod.GET)
+    public List<User> getAllUsers(Principal principal) {
         List<User> users = userDao.findAll();
         for (User x : users) {
-            if (x.getId() == userId) {
+            if (x.getId() == userDao.findIdByUsername(principal.getName())) {
                 users.remove(x);
             }
         }

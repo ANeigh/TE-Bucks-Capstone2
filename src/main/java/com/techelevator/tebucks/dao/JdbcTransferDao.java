@@ -22,7 +22,7 @@ public class JdbcTransferDao implements TransferDao{
     }
 
     @Override
-    public Transfer getTransferById(long id) {
+    public Transfer getTransferById(int id) {
 
         String sql = "SELECT * FROM accounts WHERE account_id = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
@@ -34,7 +34,7 @@ public class JdbcTransferDao implements TransferDao{
     }
 
     @Override
-    public String getTransferStatus(long id) {
+    public String getTransferStatus(int id) {
         String sql = "SELECT status FROM transfer WHERE transfer_id = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
         if (results.next()) {
@@ -57,7 +57,7 @@ public class JdbcTransferDao implements TransferDao{
     }
 
     @Override
-    public long createTransfer(Transfer transfer) {
+    public int createTransfer(Transfer transfer) {
         String sql = "INSERT INTO transfer (transfer_id, transfer_type, status, user_from, user_to, amount" +
                 " VALUES (DEFAULT, ?, ?, ?, ?, ?) RETURNS transfer_id";
 

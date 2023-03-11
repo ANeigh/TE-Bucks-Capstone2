@@ -8,12 +8,16 @@ import com.techelevator.tebucks.model.NewTransferDto;
 import com.techelevator.tebucks.model.Transfer;
 import com.techelevator.tebucks.model.TransferStatusUpdateDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 
+@RestController
 @RequestMapping(path = "/api/transfers/")
+//@PreAuthorize("isAuthenticated()")
 public class TransferController {
 
     private final TransferDao transferDao;
@@ -27,7 +31,7 @@ public class TransferController {
     }
 
     @GetMapping(path = "{id}")
-    public Transfer getTransferByID(@PathVariable long id) {
+    public Transfer getTransferByID(@PathVariable Integer id) {
         return transferDao.getTransferById(id);
     }
 
@@ -61,8 +65,8 @@ public class TransferController {
         }
     }
 
-    @PutMapping(path = "/{id}/status")
-    public Transfer updateTransferStatus(@RequestBody TransferStatusUpdateDto transferStatusUpdateDto, @PathVariable long transferId) {
+    @PutMapping(path = "{id}/status")
+    public Transfer updateTransferStatus(@RequestBody TransferStatusUpdateDto transferStatusUpdateDto, @PathVariable Integer transferId) {
         Transfer transfer = new Transfer();
         transfer.setTransferStatus(transferStatusUpdateDto.getTransferStatus());
         transfer.setTransferId(transferId);
