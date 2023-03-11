@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.quartz.QuartzProperties;
 import java.math.BigDecimal;
 
 public class Transfer {
-    private long transferId;
+    private int transferId;
     private String transferType;
     private String transferStatus;
     private User userFrom;
@@ -64,7 +64,7 @@ public class Transfer {
         return transferType.equals(TRANSFER_TYPE_SEND);
     }
 
-    public void setTransferId(long transferId) {
+    public void setTransferId(int transferId) {
         this.transferId = transferId;
     }
 

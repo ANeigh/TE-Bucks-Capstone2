@@ -1,14 +1,14 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS accounts;
-
-
+DROP TABLE IF EXISTS transfer CASCADE;
+DROP TABLE IF EXISTS accounts CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
 
 CREATE TABLE users (
 	user_id serial NOT NULL,
 	username varchar(50) UNIQUE NOT NULL,
 	password_hash varchar(200) NOT NULL,
-	role varchar(20),
+	role varchar(20) DEFAULT 'User',
 	active boolean DEFAULT true,
 
 	CONSTRAINT pk_users PRIMARY KEY (user_id),
@@ -19,7 +19,7 @@ CREATE TABLE accounts (
 	account_id serial NOT NULL,
 	user_id int NOT NULL,
 	balance money DEFAULT 1000.00,
-	active DEFAULT TRUE,
+	active boolean DEFAULT true,
 	
 	CONSTRAINT pk_accounts PRIMARY KEY (account_id),
 	CONSTRAINT fk_account_users_id FOREIGN KEY (user_id) REFERENCES users (user_id)

@@ -2,6 +2,7 @@ package com.techelevator.tebucks.dao;
 
 import com.techelevator.tebucks.model.Account;
 import com.techelevator.tebucks.model.Transfer;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -59,7 +60,7 @@ public class JdbcAccountDao implements AccountDao{
         String sql = "INSERT into accounts (account_id, user_id, balance, active)" +
                 " VALUES (DEFAULT, ?, DEFAULT, DEFAULT) RETURNING account_id";
         Integer newAccountId;
-        newAccountId =  jdbcTemplate.queryForObject(sql, Integer.class, userId);
+        newAccountId =  jdbcTemplate.queryForObject(sql,Integer.class, userId);
         return newAccountId != null;
     }
 
@@ -67,6 +68,7 @@ public class JdbcAccountDao implements AccountDao{
         Account account = new Account();
         account.setId(rs.getInt("account_id"));
         account.setBalance(rs.getBigDecimal("balance"));
+        account.setActivated(rs.getBoolean("active"));
         return account;
     }
 
