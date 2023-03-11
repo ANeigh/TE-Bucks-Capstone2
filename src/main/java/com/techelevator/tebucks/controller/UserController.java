@@ -31,17 +31,13 @@ public UserController(UserDao userDao, TransferDao transferDao) {
 @RequestMapping(path = "/api/users", method = RequestMethod.GET)
     public List<User> getAllUsers(Principal principal) {
         List<User> users = userDao.findAll();
-        for (User x : users) {
-            if (x.getId() == userDao.findIdByUsername(principal.getName())) {
-                users.remove(x);
-            }
-        }
+    users.removeIf(x -> x.getId() == userDao.findIdByUsername(principal.getName()));
         return users;
     }
 
-//@RequestMapping(path = "/api/account/transfers", method = RequestMethod.GET)
-//    public List<Transfer> getAllTransfers(Principal principal) {
-//        return transferDao.getListOfTransfers(userDao.findByUsername(principal.getName()).getId());
-//    }
+@RequestMapping(path = "/api/account/transfers", method = RequestMethod.GET)
+    public List<Transfer> getAllTransfers(Principal principal) {
+        return transferDao.getListOfTransfers(userDao.findByUsername(principal.getName()).getId());
+    }
 
 }

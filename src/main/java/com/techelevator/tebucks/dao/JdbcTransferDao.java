@@ -1,11 +1,13 @@
 package com.techelevator.tebucks.dao;
 
 import com.techelevator.tebucks.model.Transfer;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.rmi.UnexpectedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +50,7 @@ public class JdbcTransferDao implements TransferDao{
         String username = userDao.getUserById(userId).getUsername();
         List<Transfer> transfers = new ArrayList<>();
         String sql = "SELECT * FROM transfer WHERE user_to = ? or user_from = ?";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username, username);
         while (results.next()) {
             Transfer transfer = mapRowToTransfer(results);
             transfers.add(transfer);
@@ -58,11 +60,15 @@ public class JdbcTransferDao implements TransferDao{
 
     @Override
     public int createTransfer(Transfer transfer) {
-        String sql = "INSERT INTO transfer (transfer_id, transfer_type, status, user_from, user_to, amount" +
-                " VALUES (DEFAULT, ?, ?, ?, ?, ?) RETURNS transfer_id";
-
-         return jdbcTemplate.update(sql, transfer.getTransferType(), transfer.getTransferStatus(), transfer.getUserFrom(),
-                transfer.getUserTo(), transfer.getAmount());
+        String sql = "INSERT INTO transfer (transfer_id, transfer_type, status, user_from, user_to, amount) VALUES (DEFAULT, ?, ?, ?, ?, ?) RETURNING transfer_id";
+        int transferId;
+        try {
+            transferId = jdbcTemplate.queryForObject(sql, Integer.class, transfer.getTransferType(), transfer.getTransferStatus(), transfer.getUserFrom().getUsername(),
+                    transfer.getUserTo().getUsername(), transfer.getAmount());
+        } catch(DataAccessException | NullPointerException e) {
+            throw new NullPointerException("Unable to create new transfer");
+        }
+        return transferId;
     }
 
     @Override
