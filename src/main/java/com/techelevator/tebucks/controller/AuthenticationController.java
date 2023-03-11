@@ -59,11 +59,5 @@ public class AuthenticationController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User registration failed.");
         }
     }
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> dc2584e8b5369365c9a61722c8a47ead8a824fb2
 }
 
