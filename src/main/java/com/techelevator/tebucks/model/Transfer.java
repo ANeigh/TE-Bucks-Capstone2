@@ -13,6 +13,20 @@ public class Transfer {
     private User userTo;
     private BigDecimal amount;
 
+
+    public Transfer() {}
+
+    public Transfer(int transferId, String transferType, String transferStatus, User userFrom, User userTo, BigDecimal amount) {
+        this.transferId = transferId;
+        this.transferType = transferType;
+        this.transferStatus = transferStatus;
+        this.userFrom = userFrom;
+        this.userTo = userTo;
+        this.amount = amount;
+    }
+
+
+
     public static final String TRANSFER_TYPE_REQUEST = "Request";
     public static final String TRANSFER_TYPE_SEND = "Send";
     public static final String TRANSFER_STATUS_PENDING = "Pending";
