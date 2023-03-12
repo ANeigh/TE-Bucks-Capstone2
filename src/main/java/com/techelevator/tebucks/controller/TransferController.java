@@ -50,42 +50,50 @@ public class TransferController {
         transfer.setUserFrom(userDao.getUserById(transferDto.getUserFrom()));
         transfer.setUserTo(userDao.getUserById(transferDto.getUserTo()));
 
+        if (transfer.getAmount().compareTo(minAmount) < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Transfer amount must be greater than $0.00");
+        }
 
         transfer.setTransferStatus(Transfer.TRANSFER_STATUS_PENDING);
 
         if (transfer.isSendType()) {
             transfer.setTransferStatus(Transfer.TRANSFER_STATUS_APPROVED);
-        }
-
-        if (transfer.getAmount().compareTo(tearsThreshold) >= 0) {
-            tearsService.reportTransferToTEARS(transfer, "The transfer amount is or exceeds $1000.00");
-        }
-
-        if (transfer.getAmount().compareTo(minAmount) >= 0) {
+            if (transfer.getAmount().compareTo(tearsThreshold) >= 0) {
+                tearsService.reportTransferToTEARS(transfer, "The transfer amount is or exceeds $1000.00");
+            }
             if (accountDao.getBalance(transfer.getUserFrom().getId()).compareTo(transfer.getAmount()) >= 0) {
-                if (transfer.isApproved()) {
-                    accountDao.update(transfer);
-                }
-                transfer.setTransferId(transferDao.createTransfer(transfer));
-                return transfer;
+                transferDao.createTransfer(transfer);
+                accountDao.update(transfer);
             } else {
                 tearsService.reportTransferToTEARS(transfer, "The user requested a transfer that would have" +
                         " overdrawn their account");
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient Funds... broke ass");
             }
+            return transfer;
+
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Transfer amount must be greater than $0.00");
-        }
+                transfer.setTransferId(transferDao.createTransfer(transfer));
+                return transfer;
+            }
     }
+
     @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
     @PutMapping(path = "/api/transfers/{id}/status")
     public Transfer updateTransferStatus(@RequestBody TransferStatusUpdateDto transferStatusUpdateDto, @PathVariable("id") Integer transferId) {
         Transfer transfer = transferDao.getTransferById(transferId);
         transfer.setTransferStatus(transferStatusUpdateDto.getTransferStatus());
 
-        boolean updateSuccessful = transferDao.updateTransferStatus(transfer);
-        if (updateSuccessful && transfer.isApproved()) {
-            accountDao.update(transfer);
+        if (transfer.isApproved()) {
+            if (accountDao.getBalance(transfer.getUserFrom().getId()).compareTo(transfer.getAmount()) >= 0) {
+                transferDao.updateTransferStatus(transfer);
+                accountDao.update(transfer);
+            } else {
+                tearsService.reportTransferToTEARS(transfer, "The user requested a transfer that would have" +
+                        " overdrawn their account");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient Funds... broke ass");
+            }
+        } else {
+            transferDao.updateTransferStatus(transfer);
         }
         return transfer;
     }
