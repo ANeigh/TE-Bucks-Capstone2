@@ -27,33 +27,24 @@ public class JdbcTransferDao implements TransferDao{
 
     @Override
     public Transfer getTransferById(int id) {
-        Transfer transfer = new Transfer();
-        String sql = "SELECT * FROM transfer WHERE transfer_id = ?";
-        try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+        String sql = "SELECT transfer_id, transfer_type, status, CAST (amount AS DECIMAL(34,2)), user_to, user_from FROM transfer WHERE transfer_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
 
-            if (results.next()) {
-                transfer = mapRowToTransfer(results);
-            }
-        } catch (NullPointerException | EmptyResultDataAccessException e) {
-            throw new EmptyResultDataAccessException("Transfer was not found", id);
+        if (results.next()) {
+            return mapRowToTransfer(results);
+        } else {
+            return null;
         }
-        return transfer;
     }
 
     @Override
     public String getTransferStatus(int id) {
-        String transferStatus = "";
         String sql = "SELECT status FROM transfer WHERE transfer_id = ?";
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
-            if (results.next()) {
-                transferStatus = mapRowToTransfer(results).getTransferStatus();
-            }
-        } catch (NullPointerException | EmptyResultDataAccessException e) {
-            throw new EmptyResultDataAccessException("Transfer was not found", id);
+            return jdbcTemplate.queryForObject(sql, String.class, id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new EmptyResultDataAccessException("No such transfer", 1);
         }
-        return transferStatus;
     }
 
     @Override
