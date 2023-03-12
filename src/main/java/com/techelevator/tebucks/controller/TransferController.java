@@ -80,10 +80,14 @@ public class TransferController {
     @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
     @PutMapping(path = "/api/transfers/{id}/status")
     public Transfer updateTransferStatus(@RequestBody TransferStatusUpdateDto transferStatusUpdateDto, @PathVariable("id") Integer transferId) {
+        BigDecimal tearsThreshold = new BigDecimal("1000.00");
         Transfer transfer = transferDao.getTransferById(transferId);
         transfer.setTransferStatus(transferStatusUpdateDto.getTransferStatus());
 
         if (transfer.isApproved()) {
+            if (transfer.getAmount().compareTo(tearsThreshold) >= 0) {
+                tearsService.reportTransferToTEARS(transfer, "The transfer amount is or exceeds $1000.00");
+            }
             if (accountDao.getBalance(transfer.getUserFrom().getId()).compareTo(transfer.getAmount()) >= 0) {
                 transferDao.updateTransferStatus(transfer);
                 accountDao.update(transfer);
