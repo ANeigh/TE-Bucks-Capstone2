@@ -50,6 +50,9 @@ public class TransferController {
         transfer.setUserFrom(userDao.getUserById(transferDto.getUserFrom()));
         transfer.setUserTo(userDao.getUserById(transferDto.getUserTo()));
 
+        if (transfer.getUserFrom().getId() == transfer.getUserTo().getId()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Transfer must be between two unique accounts.");
+        }
         if (transfer.getAmount().compareTo(minAmount) < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Transfer amount must be greater than $0.00");
         }

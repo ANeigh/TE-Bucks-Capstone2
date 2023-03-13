@@ -8,6 +8,14 @@ public class Account {
     private BigDecimal balance;
     private boolean activated;
 
+    public Account() {}
+
+    public Account(int accountId, int userId, BigDecimal balance, boolean activated) {
+        this.accountId = accountId;
+        this.userId = userId;
+        this.balance = balance;
+        this.activated = activated;
+    }
 
     public boolean isActivated() {
         return activated;

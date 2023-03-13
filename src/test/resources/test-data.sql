@@ -49,6 +49,9 @@ INSERT INTO transfer (transfer_id, transfer_type, status, amount, user_to, user_
 INSERT INTO transfer (transfer_id, transfer_type, status, amount, user_to, user_from) VALUES (DEFAULT, 'Request', 'Rejected', 200.00, 'user2', 'user1');
 INSERT INTO transfer (transfer_id, transfer_type, status, amount, user_to, user_from) VALUES (DEFAULT, 'Request', 'Approved', 200.00, 'user3', 'user1');
 
+INSERT INTO accounts (account_id, user_id, balance, active) VALUES (DEFAULT, 1, DEFAULT, DEFAULT);
+INSERT INTO accounts (account_id, user_id, balance, active) VALUES (DEFAULT, 2, DEFAULT, DEFAULT);
+INSERT INTO accounts (account_id, user_id, balance, active) VALUES (DEFAULT, 3, DEFAULT, DEFAULT);
 
 
 COMMIT TRANSACTION;
