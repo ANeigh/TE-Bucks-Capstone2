@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class JdbcTransferDaoTests extends BaseDaoTests {
-    protected static final User USER_1 = new User(1, "user1", "user1", "USER");
-    protected static final User USER_2 = new User(2, "user2", "user2", "USER");
+    private static final User USER_1 = new User(1, "user1", "user1", "USER");
+    private static final User USER_2 = new User(2, "user2", "user2", "USER");
     private static final User USER_3 = new User(3, "user3", "user3", "USER");
 
     private static final BigDecimal bigDecimal = new BigDecimal("100.00");
