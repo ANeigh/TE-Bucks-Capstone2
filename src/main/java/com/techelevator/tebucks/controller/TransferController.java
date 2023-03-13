@@ -79,9 +79,9 @@ public class TransferController {
                 return transfer;
             }
     }
-    
+
     @CrossOrigin(origins = "https://tebucks.netlify.app")
-    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping(path = "/api/transfers/{id}/status")
     public Transfer updateTransferStatus(@RequestBody TransferStatusUpdateDto transferStatusUpdateDto, @PathVariable("id") Integer transferId) {
         BigDecimal tearsThreshold = new BigDecimal("1000.00");
